@@ -53,7 +53,7 @@ func getBase64EncodeString() -> String {
     
     let secretAndKeyData = concatenateKeyAndSecret.data(using: String.Encoding.ascii, allowLossyConversion: true)
     
-    let base64EncodeKeyAndSecret = secretAndKeyData?.base64EncodedString(options: [])  //base64EncodedStringWithOptions(NSData.Base64EncodingOptions())
+    let base64EncodeKeyAndSecret = secretAndKeyData?.base64EncodedString(options: [])  
     
     return base64EncodeKeyAndSecret!
 }
@@ -64,7 +64,8 @@ func searchForTweets(searchString: String) {
     
     getBearerToken(completion: { (bearerToken) -> Void in
         
-        let baseUrl = "https://api.twitter.com/1.1/search/tweets.json?count=20"
+        let requestCount = 100 //Twitter API cap is 100
+        let baseUrl = "https://api.twitter.com/1.1/search/tweets.json?count=\(requestCount)"
         guard let encodedRequest = searchString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {return}
         let searchOptions =  "-filter:retweets"
         let finalUrl = baseUrl + "&q=" + encodedRequest + searchOptions
